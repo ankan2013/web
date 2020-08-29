@@ -10,8 +10,9 @@
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
+<b>Список носителей для фильма ${film.name} ${film.info}</b><br><br>
 <a href="/web/list_disk_for_film?filmId=${filmId}&all=1">Показать все</a>
-<a href="/web/list_disk_for_film?filmId=${filmId}&all=0">Показать свободные</a>
+<a href="/web/list_disk_for_film?filmId=${filmId}&all=0">Показать носители не в прокате</a>
 <br><br>
 <c:if test="${list.size() != 0}">
     <table border="1">

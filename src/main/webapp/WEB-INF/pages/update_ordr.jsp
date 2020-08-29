@@ -11,6 +11,7 @@
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
+<b>Обновление заказа</b><br><br>
 <form:form method="post" modelAttribute="ordr_form" action="update_ordr_request">
   <form:input type="hidden" path="ordrId" value="${ordr_form.ordrId}"/>
   <b>Клиент</b><br>

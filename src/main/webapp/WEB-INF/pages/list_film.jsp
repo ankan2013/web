@@ -10,6 +10,7 @@
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
+<b>Список фильмов</b><br><br>
 <c:if test="${list.size() != 0}">
     <table border="1">
         <tr>

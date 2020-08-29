@@ -10,6 +10,7 @@
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
+<b>Список фильмов на носителе ${disk.name} ${disk.type}</b><br><br>
 <c:if test="${list.size() != 0}">
     <table border="1">
         <tr>
@@ -37,7 +38,7 @@
     Список пуст
 </c:if>
 <br>
-<a href="/web/add_film_for_disk?diskId=${disk_id}">Добавить фильм</a><br>
+<a href="/web/add_film_for_disk?diskId=${disk.diskId}">Добавить фильм</a><br>
 
 </body>
 </html>

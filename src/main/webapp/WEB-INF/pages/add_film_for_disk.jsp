@@ -11,6 +11,7 @@
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
+<b>Добавление фильма на носитель ${disk.name} ${disk.type}</b><br><br>
 <form:form method="post" modelAttribute="film_for_disk" action="add_film_for_disk_request">
   <b>Выберите фильм из списка</b><br>
   <br>

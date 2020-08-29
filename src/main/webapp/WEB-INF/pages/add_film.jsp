@@ -11,6 +11,7 @@
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
+<b>Добавление фильма</b><br><br>
 <form:form method="post" modelAttribute="film" action="add_film_request">
   <b>Название</b><br>
   <form:input path="name"/><br>

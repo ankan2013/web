@@ -11,6 +11,7 @@
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
+<b>Добавление клиента</b><br><br>
 <form:form method="post" modelAttribute="client" action="add_client_request">
   <b>Имя</b><br>
   <form:input path="name"/><br>

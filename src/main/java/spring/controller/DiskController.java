@@ -104,7 +104,7 @@ public class DiskController {
         ModelAndView modelAndView = new ModelAndView("list_film_for_disk");
         DiskEntity disk = diskDAO.getEntityById(diskId);
         modelAndView.getModelMap().addAttribute("list", disk.getFilms());
-        modelAndView.getModelMap().addAttribute("disk_id", diskId);
+        modelAndView.getModelMap().addAttribute("disk", disk);
         return modelAndView;
     }
 
@@ -115,6 +115,8 @@ public class DiskController {
         FilmForDisk fd = new FilmForDisk();
         fd.setDiskId(diskId);
         modelAndView.getModelMap().addAttribute("film_for_disk", fd);
+        DiskEntity disk = diskDAO.getEntityById(diskId);
+        modelAndView.getModelMap().addAttribute("disk", disk);
         return modelAndView;
     }
 

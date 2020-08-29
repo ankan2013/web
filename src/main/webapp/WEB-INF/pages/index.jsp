@@ -16,6 +16,9 @@
 <br>
 <br>
 <b>Список заказов</b>
+<a href="/web/">Показать все</a>
+<a href="/web/active">Показать активные</a>
+<br><br>
 
 <c:if test="${list.size() != 0}">
     <table border="1">
@@ -60,7 +63,12 @@
                     <a href="/web/delete_ordr?ordrId=${ordr.ordrId}">Удалить</a><br>
                 </td>
                 <td>
-                    <a href="/web/return_request?ordrId=${ordr.ordrId}">Отметить возврат</a><br>
+                    <c:if test="${ordr.isReturned}">
+                        <a href="/web/return_request?ordrId=${ordr.ordrId}&isReturned=0">Отменить возврат</a><br>
+                    </c:if>
+                    <c:if test="${not ordr.isReturned}">
+                        <a href="/web/return_request?ordrId=${ordr.ordrId}&isReturned=1">Зафиксировать возврат</a><br>
+                    </c:if>
                 </td>
             </tr>
         </c:forEach>

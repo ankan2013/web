@@ -11,6 +11,7 @@
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
+<b>Обновление носителя</b><br><br>
 <form:form method="post" modelAttribute="disk" action="update_disk_request">
   <form:hidden path="diskId"/>
   <b>Название</b><br>
@@ -18,7 +19,7 @@
   <b>Тип</b><br>
   <form:input path="type" value="${disk.type}"/><br>
   <b>Стоимость проката</b><br>
-  <form:input path="price" value="${disk.price}"/><br>
+  <form:input path="price" value="${disk.price}" required="true"/><br>
   <br>
   <form:button value="update_disk_request">Изменить</form:button>
 </form:form>

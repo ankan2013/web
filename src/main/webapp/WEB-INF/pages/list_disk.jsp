@@ -10,6 +10,7 @@
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
+<b>Список носителей</b><br><br>
 <a href="/web/list_disk?all=1">Показать все</a>
 <a href="/web/list_disk?all=0">Показать свободные</a>
 <br><br>

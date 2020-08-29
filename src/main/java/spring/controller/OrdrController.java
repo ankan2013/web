@@ -29,6 +29,13 @@ public class OrdrController {
     @Autowired
     DiskDAO diskDAO;
 
+    @RequestMapping(value = "/active")
+    public ModelAndView listOrdrActive(){
+        ModelAndView modelAndView =  new ModelAndView("index");
+        modelAndView.getModelMap().addAttribute("list", ordrDAO.getActiveOrdrs());
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/add_ordr")
     public ModelAndView addDiskForm(){
         ModelAndView modelAndView = new ModelAndView("add_ordr");
@@ -46,35 +53,43 @@ public class OrdrController {
     @RequestMapping(value = "/add_ordr_request")
     public ModelAndView addDisk(@ModelAttribute OrdrAddForm ordrForm){
         if(ordrForm.getRequestTime().equals("") || ordrForm.getReturnTime().equals(""))
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/?all=1");
         try {
             OrdrEntity ordr = new OrdrEntity();
             ordr.setClient(clientDAO.getEntityById(ordrForm.getClientId()));
             ordr.setDisk(diskDAO.getEntityById(ordrForm.getDiskId()));
+            if (ordr.getDisk() == null || ordr.getClient() == null){
+                return new ModelAndView("redirect:/?all=1");
+            }
             ordr.setIsReturned(Boolean.FALSE);
             try {
                 ordr.setRequestTime(Converter.strToDate(ordrForm.getRequestTime()));
                 ordr.setReturnTime(Converter.strToDate(ordrForm.getReturnTime()));
             }
             catch (Exception e) {
-                return new ModelAndView("redirect:/");
+                return new ModelAndView("redirect:/?all=1");
             }
             if (ordr.getReturnTime().compareTo(ordr.getRequestTime()) <= 0){
-                return new ModelAndView("redirect:/");
+                return new ModelAndView("redirect:/?all=1");
             }
             ordrDAO.save(ordr);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/?all=1");
         }
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/?all=1");
     }
 
     @RequestMapping(value = "/return_request")
-    public ModelAndView returnRequest(@RequestParam int ordrId){
+    public ModelAndView returnRequest(@RequestParam int ordrId, int isReturned){
         OrdrEntity ordr = ordrDAO.getEntityById(ordrId);
-        ordr.setIsReturned(Boolean.TRUE);
+        if (isReturned == 1) {
+            ordr.setIsReturned(Boolean.TRUE);
+        }
+        else{
+            ordr.setIsReturned(Boolean.FALSE);
+        }
         ordrDAO.update(ordr);
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/?all=1");
     }
 
     @RequestMapping(value = "/update_ordr")
@@ -108,23 +123,23 @@ public class OrdrController {
                 ordr.setReturnTime(Converter.strToDate(ordrForm.getReturnTime()));
             }
             catch (Exception e) {
-                return new ModelAndView("redirect:/");
+                return new ModelAndView("redirect:/?all=1");
             }
             if (ordr.getReturnTime().compareTo(ordr.getRequestTime()) <= 0){
-                return new ModelAndView("redirect:/");
+                return new ModelAndView("redirect:/?all=1");
             }
             ordrDAO.update(ordr);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/?all=1");
         }
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/?all=1");
     }
 
     @RequestMapping(value = "/delete_ordr")
     public ModelAndView deleteDisk(@RequestParam int ordrId){
         OrdrEntity ordr = ordrDAO.getEntityById(ordrId);
         ordrDAO.delete(ordr);
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/?all=1");
     }
 
 }

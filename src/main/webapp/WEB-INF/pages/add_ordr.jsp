@@ -11,6 +11,7 @@
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
+<b>Добавление заказа</b><br><br>
 <form:form method="post" modelAttribute="ordr_form" action="add_ordr_request">
   <b>Выберите клиента из списка</b><br>
   <form:select path="clientId">

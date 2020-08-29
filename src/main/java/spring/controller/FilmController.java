@@ -51,7 +51,7 @@ public class FilmController {
             }
             modelAndView.getModelMap().addAttribute("list", disks);
         }
-        modelAndView.getModelMap().addAttribute("filmId", filmId);
+        modelAndView.getModelMap().addAttribute("film", film);
         return modelAndView;
     }
 
