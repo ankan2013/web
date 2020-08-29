@@ -118,6 +118,9 @@ public class OrdrController {
             OrdrEntity ordr = ordrDAO.getEntityById(ordrForm.getOrdrId());
             ordr.setClient(clientDAO.getEntityById(ordrForm.getClientId()));
             ordr.setDisk(diskDAO.getEntityById(ordrForm.getDiskId()));
+            if (ordr.getDisk() == null || ordr.getClient() == null) {
+                return new ModelAndView("redirect:/?all=1");
+            }
             try {
                 ordr.setRequestTime(Converter.strToDate(ordrForm.getRequestTime()));
                 ordr.setReturnTime(Converter.strToDate(ordrForm.getReturnTime()));
