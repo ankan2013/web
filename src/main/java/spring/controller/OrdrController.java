@@ -11,10 +11,13 @@ import spring.dao.DiskDAO;
 import spring.dao.OrdrDAO;
 import spring.forms.OrdrAddForm;
 import spring.forms.OrdrUpdateForm;
+import spring.model.DiskEntity;
 import spring.model.OrdrEntity;
 import spring.utils.Converter;
 
 import javax.persistence.PersistenceException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class OrdrController {
@@ -31,7 +34,12 @@ public class OrdrController {
         ModelAndView modelAndView = new ModelAndView("add_ordr");
         modelAndView.getModelMap().addAttribute("ordr_form", new OrdrAddForm());
         modelAndView.getModelMap().addAttribute("client_list", clientDAO.getAll());
-        modelAndView.getModelMap().addAttribute("disk_list", diskDAO.getAll());
+        List<OrdrEntity> active_orders = ordrDAO.getActiveOrdrs();
+        List<DiskEntity> disks = diskDAO.getAll();
+        for(OrdrEntity o: active_orders){
+            disks.remove(o.getDisk());
+        }
+        modelAndView.getModelMap().addAttribute("disk_list", disks);
         return modelAndView;
     }
 
@@ -74,7 +82,12 @@ public class OrdrController {
         ModelAndView modelAndView = new ModelAndView("update_ordr");
         OrdrEntity ordr = ordrDAO.getEntityById(ordrId);
         modelAndView.getModelMap().addAttribute("ordr", ordr);
-        modelAndView.getModelMap().addAttribute("disk_list", diskDAO.getAll());
+        List<OrdrEntity> active_orders = ordrDAO.getActiveOrdrs();
+        List<DiskEntity> disks = diskDAO.getAll();
+        for(OrdrEntity o: active_orders){
+            disks.remove(o.getDisk());
+        }
+        modelAndView.getModelMap().addAttribute("disk_list", disks);
         modelAndView.getModelMap().addAttribute("client_list", clientDAO.getAll());
         OrdrUpdateForm ordrForm = new OrdrUpdateForm();
         ordrForm.setOrdrId(ordrId);

@@ -41,7 +41,7 @@ public class FilmController {
         ModelAndView modelAndView = new ModelAndView("list_disk_for_film");
         FilmEntity film = filmDAO.getEntityById(filmId);
         if (all == 1) {
-            modelAndView.getModelMap().addAttribute("list", diskDAO.getAll());
+            modelAndView.getModelMap().addAttribute("list", film.getDisks());
         }
         else {
             List<OrdrEntity> active_orders = ordrDAO.getActiveOrdrs();
