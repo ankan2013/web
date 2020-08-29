@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import spring.dao.DiskDAO;
 import spring.dao.FilmDAO;
+import spring.dao.OrdrDAO;
 import spring.forms.FilmForDisk;
 import spring.model.DiskEntity;
 import spring.model.FilmEntity;
+import spring.model.OrdrEntity;
 
 import javax.persistence.PersistenceException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -22,6 +26,8 @@ public class FilmController {
     FilmDAO filmDAO;
     @Autowired
     DiskDAO diskDAO;
+    @Autowired
+    OrdrDAO ordrDAO;
     
     @RequestMapping(value = "/list_film")
     public ModelAndView filmShow(){
@@ -30,12 +36,22 @@ public class FilmController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list_film_for_disk")
-    public ModelAndView filmForDiskShow(@RequestParam int diskId){
-        ModelAndView modelAndView = new ModelAndView("list_film_for_disk");
-        DiskEntity disk = diskDAO.getEntityById(diskId);
-        modelAndView.getModelMap().addAttribute("list", disk.getFilms());
-        modelAndView.getModelMap().addAttribute("disk_id", diskId);
+    @RequestMapping(value = "/list_disk_for_film")
+    public ModelAndView filmForDiskShow(@RequestParam int filmId, int all){
+        ModelAndView modelAndView = new ModelAndView("list_disk_for_film");
+        FilmEntity film = filmDAO.getEntityById(filmId);
+        if (all == 1) {
+            modelAndView.getModelMap().addAttribute("list", diskDAO.getAll());
+        }
+        else {
+            List<OrdrEntity> active_orders = ordrDAO.getActiveOrdrs();
+            List<DiskEntity> disks = new ArrayList<>(film.getDisks());
+            for(OrdrEntity o: active_orders){
+                disks.remove(o.getDisk());
+            }
+            modelAndView.getModelMap().addAttribute("list", disks);
+        }
+        modelAndView.getModelMap().addAttribute("filmId", filmId);
         return modelAndView;
     }
 
@@ -87,7 +103,12 @@ public class FilmController {
     @RequestMapping(value = "/delete_film")
     public ModelAndView deleteFilm(@RequestParam int filmId){
         FilmEntity film = filmDAO.getEntityById(filmId);
-        filmDAO.delete(film);
+        try {
+            filmDAO.delete(film);
+        }
+        catch (PersistenceException e){
+            return new ModelAndView("redirect:/list_film");
+        }
         return new ModelAndView("redirect:/list_film");
     }
 }

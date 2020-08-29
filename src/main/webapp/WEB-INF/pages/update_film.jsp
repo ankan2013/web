@@ -16,7 +16,7 @@
   <b>Название</b><br>
   <form:input path="name" value="${film.name}"/><br>
   <b>Информация</b><br>
-  <form:input path="info" value="${film.email}"/><br>
+  <form:input path="info" value="${film.info}"/><br>
   <br>
   <form:button value="update_film_request">Изменить</form:button>
 </form:form>

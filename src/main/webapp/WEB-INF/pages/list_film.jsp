@@ -17,6 +17,7 @@
             <th>Информация</th>
             <th>Действие 1</th>
             <th>Действие 2</th>
+            <th>Действие 3</th>
         </tr>
         <c:forEach items="${list}" var="film">
             <tr>
@@ -31,6 +32,9 @@
                 </td>
                 <td>
                     <a href="/web/delete_film?filmId=${film.filmId}">Удалить</a><br>
+                </td>
+                <td>
+                    <a href="/web/list_disk_for_film?filmId=${film.filmId}&all=1">Показать носители</a><br>
                 </td>
             </tr>
         </c:forEach>

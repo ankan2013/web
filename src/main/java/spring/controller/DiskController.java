@@ -90,8 +90,22 @@ public class DiskController {
     @RequestMapping(value = "/delete_disk")
     public ModelAndView deleteDisk(@RequestParam int diskId){
         DiskEntity disk = diskDAO.getEntityById(diskId);
-        diskDAO.delete(disk);
+        try {
+            diskDAO.delete(disk);
+        }
+        catch (PersistenceException e){
+            return new ModelAndView("redirect:/list_disk?all=1");
+        }
         return new ModelAndView("redirect:/list_disk?all=1");
+    }
+
+    @RequestMapping(value = "/list_film_for_disk")
+    public ModelAndView filmForDiskShow(@RequestParam int diskId){
+        ModelAndView modelAndView = new ModelAndView("list_film_for_disk");
+        DiskEntity disk = diskDAO.getEntityById(diskId);
+        modelAndView.getModelMap().addAttribute("list", disk.getFilms());
+        modelAndView.getModelMap().addAttribute("disk_id", diskId);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/add_film_for_disk")

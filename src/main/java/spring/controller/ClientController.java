@@ -71,7 +71,12 @@ public class ClientController {
     @RequestMapping(value = "/delete_client")
     public ModelAndView deleteClient(@RequestParam int clientId){
         ClientEntity client = clientDAO.getEntityById(clientId);
-        clientDAO.delete(client);
+        try {
+            clientDAO.delete(client);
+        }
+        catch (PersistenceException e){
+            return new ModelAndView("redirect:/list_client");
+        }
         return new ModelAndView("redirect:/list_client");
     }
 }
