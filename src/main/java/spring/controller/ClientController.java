@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import spring.dao.ClientDAO;
 import spring.model.ClientEntity;
+import spring.utils.ErrorRedirect;
 
 import javax.persistence.PersistenceException;
 
@@ -35,11 +36,11 @@ public class ClientController {
     public ModelAndView addClient(@ModelAttribute ClientEntity client){
         if(client.getName().equals("") || client.getEmail().equals("")
                 || client.getPhone().equals(""))
-            return new ModelAndView("redirect:/list_client");
+            return ErrorRedirect.error("empty_field");
         try {
             clientDAO.save(client);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/list_client");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_client");
     }
@@ -56,14 +57,14 @@ public class ClientController {
         ClientEntity client = clientDAO.getEntityById(clientInput.getClientId());
         if(clientInput.getName().equals("") || clientInput.getEmail().equals("")
                 || clientInput.getPhone().equals(""))
-            return new ModelAndView("redirect:/list_client");
+            return ErrorRedirect.error("empty_field");
         client.setName(clientInput.getName());
         client.setEmail(clientInput.getEmail());
         client.setPhone(clientInput.getPhone());
         try {
             clientDAO.update(client);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/list_client");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_client");
     }
@@ -75,7 +76,7 @@ public class ClientController {
             clientDAO.delete(client);
         }
         catch (PersistenceException e){
-            return new ModelAndView("redirect:/list_client");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_client");
     }

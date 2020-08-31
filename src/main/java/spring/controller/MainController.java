@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import spring.dao.*;
 import spring.model.ClientEntity;
+import spring.utils.ErrorRedirect;
 
 import javax.persistence.PersistenceException;
 
@@ -19,6 +20,7 @@ public class MainController {
 
     @RequestMapping(value = "/")
     public ModelAndView main(){
+        ErrorRedirect.errorInitialize();
         ModelAndView modelAndView =  new ModelAndView("index");
         modelAndView.getModelMap().addAttribute("list", ordrDAO.getAll());
         return modelAndView;

@@ -13,6 +13,7 @@ import spring.forms.FilmForDisk;
 import spring.model.DiskEntity;
 import spring.model.FilmEntity;
 import spring.model.OrdrEntity;
+import spring.utils.ErrorRedirect;
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class DiskController {
         try {
             diskDAO.save(disk);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/list_disk?all=1");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_disk?all=1");
     }
@@ -75,12 +76,12 @@ public class DiskController {
     @RequestMapping(value = "/update_disk_request")
     public ModelAndView updateDisk(@ModelAttribute DiskEntity diskInput){
         DiskEntity disk = diskDAO.getEntityById(diskInput.getDiskId());
-        if(diskInput.getType().equals("") || diskInput.getName().equals("") || diskInput.getPrice().equals(""))
-            return new ModelAndView("redirect:/list_disk?all=1");
+        if(diskInput.getType().equals("") || diskInput.getName().equals("") || diskInput.getPrice().equals(0))
+            return ErrorRedirect.error("empty_field");
         List<OrdrEntity> ordrs = ordrDAO.getActiveOrdrs();
         for(OrdrEntity o: ordrs){
             if (o.getDisk().equals(disk)){
-                return new ModelAndView("redirect:/list_disk?all=1");
+                return ErrorRedirect.error("ordered_disk_err");
             }
         }
         disk.setName(diskInput.getName());
@@ -89,7 +90,7 @@ public class DiskController {
         try {
             diskDAO.update(disk);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/list_disk?all=1");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_disk?all=1");
     }
@@ -101,7 +102,7 @@ public class DiskController {
             diskDAO.delete(disk);
         }
         catch (PersistenceException e){
-            return new ModelAndView("redirect:/list_disk?all=1");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_disk?all=1");
     }
@@ -135,7 +136,7 @@ public class DiskController {
             List<OrdrEntity> ordrs = ordrDAO.getActiveOrdrs();
             for(OrdrEntity o: ordrs){
                 if (o.getDisk().equals(disk)){
-                    return new ModelAndView("redirect:/list_disk?all=1");
+                    return ErrorRedirect.error("ordered_disk_err");
                 }
             }
             Set<FilmEntity> films = disk.getFilms();
@@ -143,7 +144,7 @@ public class DiskController {
             disk.setFilms(films);
             diskDAO.update(disk);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/list_film_for_disk?diskId="+fd.getDiskId());
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_film_for_disk?diskId="+fd.getDiskId());
     }
@@ -156,7 +157,7 @@ public class DiskController {
             List<OrdrEntity> ordrs = ordrDAO.getActiveOrdrs();
             for(OrdrEntity o: ordrs){
                 if (o.getDisk().equals(disk)){
-                    return new ModelAndView("redirect:/list_disk?all=1");
+                    return ErrorRedirect.error("ordered_disk_err");
                 }
             }
             Set<FilmEntity> films = disk.getFilms();
@@ -164,7 +165,7 @@ public class DiskController {
             disk.setFilms(films);
             diskDAO.update(disk);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/list_film_for_disk?diskId="+diskId);
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_film_for_disk?diskId="+diskId);
     }

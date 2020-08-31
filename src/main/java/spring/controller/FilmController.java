@@ -13,6 +13,7 @@ import spring.forms.FilmForDisk;
 import spring.model.DiskEntity;
 import spring.model.FilmEntity;
 import spring.model.OrdrEntity;
+import spring.utils.ErrorRedirect;
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
@@ -67,11 +68,11 @@ public class FilmController {
     public ModelAndView addFilm(@ModelAttribute FilmEntity film){
         if(film.getName().equals("")
                 || film.getInfo().equals(""))
-            return new ModelAndView("redirect:/list_film");
+            return ErrorRedirect.error("empty_field");
         try {
             filmDAO.save(film);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/list_film");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_film");
     }
@@ -88,14 +89,14 @@ public class FilmController {
         FilmEntity film = filmDAO.getEntityById(filmInput.getFilmId());
         if(filmInput.getName().equals("")
                 || filmInput.getInfo().equals(""))
-            return new ModelAndView("redirect:/list_film");
+            return ErrorRedirect.error("empty_field");
         film.setName(filmInput.getName());
         film.setName(filmInput.getName());
         film.setInfo(filmInput.getInfo());
         try {
             filmDAO.update(film);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/list_film");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_film");
     }
@@ -107,7 +108,7 @@ public class FilmController {
             filmDAO.delete(film);
         }
         catch (PersistenceException e){
-            return new ModelAndView("redirect:/list_film");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/list_film");
     }

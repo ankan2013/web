@@ -15,6 +15,7 @@ import spring.model.DiskEntity;
 import spring.model.FilmEntity;
 import spring.model.OrdrEntity;
 import spring.utils.Converter;
+import spring.utils.ErrorRedirect;
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class OrdrController {
     }
 
     @RequestMapping(value = "/add_ordr")
-    public ModelAndView addDiskForm(){
+    public ModelAndView addOrdrForm(){
         ModelAndView modelAndView = new ModelAndView("add_ordr");
         modelAndView.getModelMap().addAttribute("ordr_form", new OrdrAddForm());
         modelAndView.getModelMap().addAttribute("client_list", clientDAO.getAll());
@@ -52,16 +53,16 @@ public class OrdrController {
     }
 
     @RequestMapping(value = "/add_ordr_request")
-    public ModelAndView addDisk(@ModelAttribute OrdrAddForm ordrForm){
+    public ModelAndView addOrdr(@ModelAttribute OrdrAddForm ordrForm){
         if(ordrForm.getRequestTime().equals("") || ordrForm.getReturnTime().equals(""))
-            return new ModelAndView("redirect:/?all=1");
+            return ErrorRedirect.error("empty_field");
         try {
             OrdrEntity ordr = new OrdrEntity();
             ordr.setClient(clientDAO.getEntityById(ordrForm.getClientId()));
             ordr.setDisk(diskDAO.getEntityById(ordrForm.getDiskId()));
             ordr.setFilms(new ArrayList<>(ordr.getDisk().getFilms()));
             if (ordr.getDisk() == null || ordr.getClient() == null){
-                return new ModelAndView("redirect:/?all=1");
+                return ErrorRedirect.error("empty_field");
             }
             ordr.setIsReturned(Boolean.FALSE);
             try {
@@ -69,14 +70,14 @@ public class OrdrController {
                 ordr.setReturnTime(Converter.strToDate(ordrForm.getReturnTime()));
             }
             catch (Exception e) {
-                return new ModelAndView("redirect:/?all=1");
+                return ErrorRedirect.error("incorrect_date_format");
             }
             if (ordr.getReturnTime().compareTo(ordr.getRequestTime()) <= 0){
-                return new ModelAndView("redirect:/?all=1");
+                return ErrorRedirect.error("incorrect_return_date");
             }
             ordrDAO.save(ordr);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/?all=1");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/?all=1");
     }
@@ -90,7 +91,12 @@ public class OrdrController {
         else{
             ordr.setIsReturned(Boolean.FALSE);
         }
-        ordrDAO.update(ordr);
+        try {
+            ordrDAO.update(ordr);
+        }
+        catch (PersistenceException e){
+            return ErrorRedirect.error("database_err");
+        }
         return new ModelAndView("redirect:/?all=1");
     }
 
@@ -115,13 +121,13 @@ public class OrdrController {
     }
 
     @RequestMapping(value = "/update_ordr_request")
-    public ModelAndView addDisk(@ModelAttribute OrdrUpdateForm ordrForm) {
+    public ModelAndView updateOrdr(@ModelAttribute OrdrUpdateForm ordrForm) {
         try {
             OrdrEntity ordr = ordrDAO.getEntityById(ordrForm.getOrdrId());
             ordr.setClient(clientDAO.getEntityById(ordrForm.getClientId()));
             ordr.setDisk(diskDAO.getEntityById(ordrForm.getDiskId()));
             if (ordr.getDisk() == null || ordr.getClient() == null) {
-                return new ModelAndView("redirect:/?all=1");
+                return ErrorRedirect.error("empty_field");
             }
             ordr.setFilms(new ArrayList<>(ordr.getDisk().getFilms()));
             try {
@@ -129,14 +135,14 @@ public class OrdrController {
                 ordr.setReturnTime(Converter.strToDate(ordrForm.getReturnTime()));
             }
             catch (Exception e) {
-                return new ModelAndView("redirect:/?all=1");
+                return ErrorRedirect.error("incorrect_date_format");
             }
             if (ordr.getReturnTime().compareTo(ordr.getRequestTime()) <= 0){
-                return new ModelAndView("redirect:/?all=1");
+                return ErrorRedirect.error("incorrect_return_date");
             }
             ordrDAO.update(ordr);
         } catch (PersistenceException e) {
-            return new ModelAndView("redirect:/?all=1");
+            return ErrorRedirect.error("database_err");
         }
         return new ModelAndView("redirect:/?all=1");
     }
@@ -144,7 +150,12 @@ public class OrdrController {
     @RequestMapping(value = "/delete_ordr")
     public ModelAndView deleteDisk(@RequestParam int ordrId){
         OrdrEntity ordr = ordrDAO.getEntityById(ordrId);
-        ordrDAO.delete(ordr);
+        try {
+            ordrDAO.delete(ordr);
+        }
+        catch (PersistenceException e){
+            return ErrorRedirect.error("database_err");
+        }
         return new ModelAndView("redirect:/?all=1");
     }
 
