@@ -57,7 +57,7 @@ public class DiskController {
     @RequestMapping(value = "/add_disk_request")
     public ModelAndView addDisk(@ModelAttribute DiskEntity disk){
         if(disk.getType().equals("") || disk.getName().equals("") || disk.getPrice().equals(0))
-            return new ModelAndView("redirect:/list_disk?all=1");
+            return ErrorRedirect.error("empty_field");
         try {
             diskDAO.save(disk);
         } catch (PersistenceException e) {
