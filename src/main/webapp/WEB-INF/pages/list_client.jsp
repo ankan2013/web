@@ -6,7 +6,7 @@
     <title>Список клиентов</title>
 </head>
 <body>
-<a href="/web/">На главную</a>
+<a href="<%=request.getContextPath()%>/">На главную</a>
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
@@ -32,10 +32,10 @@
                     <c:out value="${client.phone}"/>
                 </td>
                 <td>
-                    <a href="/web/update_client?clientId=${client.clientId}">Изменить</a><br>
+                    <a href="<%=request.getContextPath()%>/update_client?clientId=${client.clientId}">Изменить</a><br>
                 </td>
                 <td>
-                    <a href="/web/delete_client?clientId=${client.clientId}">Удалить</a><br>
+                    <a href="<%=request.getContextPath()%>/delete_client?clientId=${client.clientId}">Удалить</a><br>
                 </td>
             </tr>
         </c:forEach>
@@ -46,7 +46,7 @@
     Список пуст
 </c:if>
 <br>
-<a href="/web/add_client">Добавить клиента</a><br>
+<a href="<%=request.getContextPath()%>/add_client">Добавить клиента</a><br>
 
 </body>
 </html>

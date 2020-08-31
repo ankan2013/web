@@ -6,13 +6,13 @@
     <title>Список дисков</title>
 </head>
 <body>
-<a href="/web/">На главную</a>
+<a href="<%=request.getContextPath()%>/">На главную</a>
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
 <b>Список носителей для фильма ${film.name} ${film.info}</b><br><br>
-<a href="/web/list_disk_for_film?filmId=${filmId}&all=1">Показать все</a>
-<a href="/web/list_disk_for_film?filmId=${filmId}&all=0">Показать носители не в прокате</a>
+<a href="<%=request.getContextPath()%>/list_disk_for_film?filmId=${film.filmId}&all=1">Показать все</a>
+<a href="<%=request.getContextPath()%>/list_disk_for_film?filmId=${film.filmId}&all=0">Показать носители не в прокате</a>
 <br><br>
 <c:if test="${list.size() != 0}">
     <table border="1">

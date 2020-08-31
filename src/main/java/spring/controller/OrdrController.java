@@ -12,6 +12,7 @@ import spring.dao.OrdrDAO;
 import spring.forms.OrdrAddForm;
 import spring.forms.OrdrUpdateForm;
 import spring.model.DiskEntity;
+import spring.model.FilmEntity;
 import spring.model.OrdrEntity;
 import spring.utils.Converter;
 
@@ -58,6 +59,7 @@ public class OrdrController {
             OrdrEntity ordr = new OrdrEntity();
             ordr.setClient(clientDAO.getEntityById(ordrForm.getClientId()));
             ordr.setDisk(diskDAO.getEntityById(ordrForm.getDiskId()));
+            ordr.setFilms(new ArrayList<>(ordr.getDisk().getFilms()));
             if (ordr.getDisk() == null || ordr.getClient() == null){
                 return new ModelAndView("redirect:/?all=1");
             }
@@ -121,6 +123,7 @@ public class OrdrController {
             if (ordr.getDisk() == null || ordr.getClient() == null) {
                 return new ModelAndView("redirect:/?all=1");
             }
+            ordr.setFilms(new ArrayList<>(ordr.getDisk().getFilms()));
             try {
                 ordr.setRequestTime(Converter.strToDate(ordrForm.getRequestTime()));
                 ordr.setReturnTime(Converter.strToDate(ordrForm.getReturnTime()));

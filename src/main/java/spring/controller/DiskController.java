@@ -15,6 +15,7 @@ import spring.model.FilmEntity;
 import spring.model.OrdrEntity;
 
 import javax.persistence.PersistenceException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -76,6 +77,12 @@ public class DiskController {
         DiskEntity disk = diskDAO.getEntityById(diskInput.getDiskId());
         if(diskInput.getType().equals("") || diskInput.getName().equals("") || diskInput.getPrice().equals(""))
             return new ModelAndView("redirect:/list_disk?all=1");
+        List<OrdrEntity> ordrs = ordrDAO.getActiveOrdrs();
+        for(OrdrEntity o: ordrs){
+            if (o.getDisk().equals(disk)){
+                return new ModelAndView("redirect:/list_disk?all=1");
+            }
+        }
         disk.setName(diskInput.getName());
         disk.setType(diskInput.getType());
         disk.setPrice(diskInput.getPrice());
@@ -125,6 +132,12 @@ public class DiskController {
         try {
             FilmEntity film = filmDAO.getEntityById(fd.getFilmId());
             DiskEntity disk = diskDAO.getEntityById(fd.getDiskId());
+            List<OrdrEntity> ordrs = ordrDAO.getActiveOrdrs();
+            for(OrdrEntity o: ordrs){
+                if (o.getDisk().equals(disk)){
+                    return new ModelAndView("redirect:/list_disk?all=1");
+                }
+            }
             Set<FilmEntity> films = disk.getFilms();
             films.add(film);
             disk.setFilms(films);
@@ -140,6 +153,12 @@ public class DiskController {
         try {
             FilmEntity film = filmDAO.getEntityById(filmId);
             DiskEntity disk = diskDAO.getEntityById(diskId);
+            List<OrdrEntity> ordrs = ordrDAO.getActiveOrdrs();
+            for(OrdrEntity o: ordrs){
+                if (o.getDisk().equals(disk)){
+                    return new ModelAndView("redirect:/list_disk?all=1");
+                }
+            }
             Set<FilmEntity> films = disk.getFilms();
             films.remove(film);
             disk.setFilms(films);

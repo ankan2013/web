@@ -7,7 +7,7 @@
   <title>Добавление клиента</title>
 </head>
 <body>
-<a href="/web/">На главную</a>
+<a href="<%=request.getContextPath()%>/">На главную</a>
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>

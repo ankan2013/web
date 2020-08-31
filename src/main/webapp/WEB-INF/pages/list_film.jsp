@@ -6,7 +6,7 @@
     <title>Список фильмов</title>
 </head>
 <body>
-<a href="/web/">На главную</a>
+<a href="<%=request.getContextPath()%>/">На главную</a>
 <br><br>
 <input type="button" onclick="history.back();" value="Назад"/><br>
 <br>
@@ -29,13 +29,13 @@
                     <c:out value="${film.info}"/>
                 </td>
                 <td>
-                    <a href="/web/update_film?filmId=${film.filmId}">Изменить</a><br>
+                    <a href="<%=request.getContextPath()%>/update_film?filmId=${film.filmId}">Изменить</a><br>
                 </td>
                 <td>
-                    <a href="/web/delete_film?filmId=${film.filmId}">Удалить</a><br>
+                    <a href="<%=request.getContextPath()%>/delete_film?filmId=${film.filmId}">Удалить</a><br>
                 </td>
                 <td>
-                    <a href="/web/list_disk_for_film?filmId=${film.filmId}&all=1">Показать носители</a><br>
+                    <a href="<%=request.getContextPath()%>/list_disk_for_film?filmId=${film.filmId}&all=1">Показать носители</a><br>
                 </td>
             </tr>
         </c:forEach>
@@ -46,7 +46,7 @@
     Список пуст
 </c:if>
 <br>
-<a href="/web/add_film">Добавить фильм</a><br>
+<a href="<%=request.getContextPath()%>/add_film">Добавить фильм</a><br>
 
 </body>
 </html>

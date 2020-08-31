@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,7 @@ public class OrdrEntity {
     private Date returnTime;
     private DiskEntity disk;
     private ClientEntity client;
+    private List<FilmEntity> films;
 
     public OrdrEntity(){}
 
@@ -109,6 +111,20 @@ public class OrdrEntity {
 
     public void setDisk(DiskEntity disk) {
         this.disk = disk;
+    }
+
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(
+            name = "ordr_film",
+            joinColumns = { @JoinColumn (name = "film_id") },
+            inverseJoinColumns = { @JoinColumn (name = "ordr_id") }
+    )
+    public List<FilmEntity> getFilms() {
+        return films;
+    }
+
+    public void setFilms(List<FilmEntity> films) {
+        this.films = films;
     }
 
 }
