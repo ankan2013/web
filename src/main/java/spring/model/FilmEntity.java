@@ -34,7 +34,7 @@ public class FilmEntity {
     }
 
     @Basic
-    @Column(name = "name", length = 30)
+    @Column(name = "name")
     public String getName() {
         return name;
     }

@@ -35,7 +35,7 @@ public class ClientEntity {
     }
 
     @Basic
-    @Column(name = "name", length = 30)
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -45,7 +45,7 @@ public class ClientEntity {
     }
 
     @Basic
-    @Column(name = "email", nullable = false, length = 20)
+    @Column(name = "email", nullable = false)
     public String getEmail() {
         return email;
     }

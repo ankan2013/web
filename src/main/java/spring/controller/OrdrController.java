@@ -108,7 +108,9 @@ public class OrdrController {
         List<OrdrEntity> active_orders = ordrDAO.getActiveOrdrs();
         List<DiskEntity> disks = diskDAO.getAll();
         for(OrdrEntity o: active_orders){
-            disks.remove(o.getDisk());
+            if (!o.getDisk().equals(ordr.getDisk())){
+                disks.remove(o.getDisk());
+            }
         }
         modelAndView.getModelMap().addAttribute("disk_list", disks);
         modelAndView.getModelMap().addAttribute("client_list", clientDAO.getAll());

@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Список клиентов</title>
+    <title>Список носителей</title>
 </head>
 <body>
 <a href="<%=request.getContextPath()%>/">На главную</a>
